@@ -1,6 +1,6 @@
 /*
-* Add NetID and names of all project partners
-*
+* ac1771 Advith Chegu
+* tsc95 Tajvir Chahal
 */
 #include <stdio.h>
 #include <string.h>
@@ -18,7 +18,20 @@ static unsigned int myaddress = 4026544704;   // Binary  would be 11110000000000
  */
 static unsigned int get_top_bits(unsigned int value,  int num_bits)
 {
-	//Implement your code here
+    int num_digs = 0;
+    unsigned int temp = value;
+
+    while(temp != 0){
+        num_digs += 1;
+        temp = temp >> 1;
+    }
+
+    // now remove the right number of digits from value
+    for(int i = 0; i < num_digs - num_bits; i++){
+        value = value >> 1;
+    }
+
+    return value;
 	
 }
 
