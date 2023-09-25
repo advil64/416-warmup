@@ -8,13 +8,15 @@
 
 #define NUM_TOP_BITS 4 //top bits to extract
 #define BITMAP_SIZE 4 //size of the bitmap array
-#define SET_BIT_INDEX 17 //bit index to set 
+#define SET_BIT_INDEX 20 //bit index to set 
 #define GET_BIT_INDEX 17 //bit index to read
 
 static unsigned int myaddress = 4026544704;   // Binary  would be 11110000000000000011001001000000
 
 /* 
  * Function 1: EXTRACTING OUTER (TOP-ORDER) BITS
+ * TODO: What happens if num_bit is greater than the number in bin(value)?
+ * TODO: Other edge cases like stuff being 0 or negative
  */
 static unsigned int get_top_bits(unsigned int value,  int num_bits)
 {
@@ -42,7 +44,47 @@ static unsigned int get_top_bits(unsigned int value,  int num_bits)
  */
 static void set_bit_at_index(char *bitmap, int index)
 {
-    //Implement your code here	
+    int bit_to_set = 0;
+    int arr_index = (int) index/8;
+
+    int char_index = (index % 8);
+    int index_from_right = 8 - char_index;
+
+    char char_to_mod = bitmap[arr_index];
+    int new_char = (int) char_to_mod;
+
+
+
+    int temp = 0;
+    int temp_char = 0;
+
+    // set the bit in the char bits accordingly
+    for(int i = 0; i < index_from_right; i++){
+        temp = new_char % 2;
+        new_char = new_char >> 1;
+
+        temp_char += temp;
+        temp_char = temp_char << 1;
+    }
+
+    if(new_char % 2 == 1){
+        if(bit_to_set == 0){
+            new_char -= 1;
+        }
+    } else {
+        if(bit_to_set == 1){
+            new_char += 1;
+        }
+    }
+
+    // do the reverse
+    for(int i = 0; i < char_index; i++){
+        temp = temp_char % 2;
+        temp_char = temp_char >> 1;
+
+        new_char = new_char << 1;
+        new_char += temp;
+    }
 
     return;
 }
@@ -75,6 +117,8 @@ int main () {
      */
     char *bitmap = (char *)malloc(BITMAP_SIZE);  //We can store 32 bits (4*8-bit per character)
     memset(bitmap,0, BITMAP_SIZE); //clear everything
+
+    bitmap[2] = 'v';
     
     /* 
      * Let's try to set the bit 
