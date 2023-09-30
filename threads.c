@@ -1,6 +1,6 @@
 /*
-* Add NetID and names of all project partners
-*
+* ac1771 Advith Chegu
+* tsc95 Tajvir Chahal
 */
 #include <stdio.h>
 #include <stdlib.h>
