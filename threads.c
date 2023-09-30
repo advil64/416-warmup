@@ -9,7 +9,8 @@
 pthread_t t1, t2, t3, t4;
 pthread_mutex_t mutex;
 int x = 0;
-int loop = 10000;
+//int loop = 10000; 
+// commented out the loop global variable just to make sure pthread is properly used
 
 /* Counter Incrementer function:
  * This is the function that each thread will run which
@@ -22,19 +23,22 @@ int loop = 10000;
 void *add_counter(void *arg) {
 
     int i;
+    int loop = *((int*)arg); //convert the argument back to an int
 
-    printf("counter check: %d \n", loop);
+    printf("Amount to be added to x: %d \n", loop);
 
     /* Add thread synchronizaiton logic in this function */	
+
+    // 2. lock the x variable to synchronize the threads
     pthread_mutex_lock(&mutex);
 
-
+    // add to the x variable
     for(i = 0; i < loop; i++){
 
 	x = x + 1;
     }
 
-
+    // unlock
     pthread_mutex_unlock(&mutex);
 
     return NULL;
@@ -54,18 +58,29 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    loop = atoi(argv[1]);
+    int loop = atoi(argv[1]);
 
     printf("Going to run four threads to increment x up to %d\n", 4 * loop);
 
     /* Implement Code Here */
-    pthread_create(&t1, NULL, add_counter, NULL);
-    pthread_create(&t2, NULL, add_counter, NULL);
-    pthread_create(&t3, NULL, add_counter, NULL);
-    pthread_create(&t4, NULL, add_counter, NULL);
 
+    /*
+        to compile & run:
+        gcc threads.c -o thread
+        ./thread [loop value]
 
-    /* Make sure to join the threads */
+        example output:
+        ./thread 500
+        The final value of x is 2000
+    */
+
+    //1. create pthreads, pass the function paramater, and pass the argument for add counter
+    pthread_create(&t1, NULL, add_counter, &loop);
+    pthread_create(&t2, NULL, add_counter, &loop);
+    pthread_create(&t3, NULL, add_counter, &loop);
+    pthread_create(&t4, NULL, add_counter, &loop);
+
+    //3. Join the pthreads
     pthread_join(t1, NULL);
     pthread_join(t2, NULL);
     pthread_join(t3, NULL);
@@ -76,4 +91,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
