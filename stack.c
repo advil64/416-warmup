@@ -16,16 +16,15 @@ void signal_handle(int signalno)
     printf("handling segmentation fault!\n");
 
     /* Step 2: Handle segfault and change the stack*/
-    int instr_len = 4;
-    int addr_offset = 1;
+    int instr_len = 0x5;
+    int addr_offset = 0xf;
 
     /* Step 3: Find the location of the program counter on the stack using GDB */
     int *signal_no_address = (int *)(&signalno);
-    int *program_counter = signal_no_address - addr_offset;
+    int *program_counter = signal_no_address + addr_offset;
 
     /* Step 4: Calculate the new program counter value */
-    // *program_counter += instr_len;
-    *program_counter = (unsigned int) *program_counter + instr_len;
+    *program_counter = *program_counter + instr_len;
 }
 
 int main(int argc, char *argv[])

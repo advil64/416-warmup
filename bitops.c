@@ -45,11 +45,10 @@ static unsigned int get_top_bits(unsigned int value,  int num_bits)
 static void set_bit_at_index(char *bitmap, int index)
 {
     int arr_index = (int) index/8;
-    int arr_right_index = BITMAP_SIZE - arr_index - 1; //array read from right to left
     int char_index = (index % 8);
 
     // looking at the array from right to left
-    bitmap[arr_right_index] |= (1 << char_index);
+    bitmap[arr_index] |= (1 << char_index);
 }
 
 
@@ -60,10 +59,9 @@ static void set_bit_at_index(char *bitmap, int index)
 static int get_bit_at_index(char *bitmap, int index)
 {
     int arr_index = (int) index/8;
-    int arr_right_index = BITMAP_SIZE - arr_index - 1; //array read from right to left
     int char_index = (index % 8);
     
-    return (bitmap[arr_right_index] >> char_index) & 1;
+    return (bitmap[arr_index] >> char_index) & 1;
 }
 
 

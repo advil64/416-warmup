@@ -1,6 +1,8 @@
 # OS Project 1 Report
 #### Authors: ac1771 and tsc95
 
+## Signal Handler
+
 
 ## Bit Operations
 ### Extracting Top Order Bits
