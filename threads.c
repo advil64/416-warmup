@@ -25,8 +25,6 @@ void *add_counter(void *arg) {
     int i;
     int loop = *((int*)arg); //convert the argument back to an int
 
-    printf("Amount to be added to x: %d \n", loop);
-
     /* Add thread synchronizaiton logic in this function */	
 
     // 2. lock the x variable to synchronize the threads
@@ -34,8 +32,7 @@ void *add_counter(void *arg) {
 
     // add to the x variable
     for(i = 0; i < loop; i++){
-
-	x = x + 1;
+        x = x + 1;
     }
 
     // unlock
